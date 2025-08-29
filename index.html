@@ -237,24 +237,25 @@
   }
 
   function calcAFT(ox){
-    const total = Object.values(ox).reduce((a,b)=>a+b,0);
+  const total = Object.values(ox).reduce((a,b)=>a+b,0);
   if(total === 0){
     return "0 (No Blend)";
   }
-    const sum=ox.SiO2+ox.Al2O3;
-    let aft=0, slag="";
-    if(sum<55){
-      aft=1245+(1.1*ox.SiO2)+(0.95*ox.Al2O3)-(2.5*ox.Fe2O3)-(2.98*ox.CaO)-(4.5*ox.MgO)-(7.89*(ox.Na2O+ox.K2O))-(1.7*ox.SO3)-(0.63*ox.TiO2);
-      slag="High";
-    }else if(sum<75){
-      aft=1323+(1.45*ox.SiO2)+(0.683*ox.Al2O3)-(2.39*ox.Fe2O3)-(3.1*ox.CaO)-(4.5*ox.MgO)-(7.49*(ox.Na2O+ox.K2O))-(2.1*ox.SO3)-(0.63*ox.TiO2);
-      slag="Medium";
-    }else{
-      aft=1395+(1.2*ox.SiO2)+(0.9*ox.Al2O3)-(2.5*ox.Fe2O3)-(3.1*ox.CaO)-(4.5*ox.MgO)-(7.2*(ox.Na2O+ox.K2O))-(1.7*ox.SO3)-(0.63*ox.TiO2);
-      slag="Low";
-    }
-    return aft.toFixed(2)+" ("+slag+" Slagging)";
+  const sum = ox["SiO₂"] + ox["Al₂O₃"];
+  let aft=0, slag="";
+  if(sum<55){
+    aft=1245+(1.1*ox["SiO₂"])+(0.95*ox["Al₂O₃"])-(2.5*ox["Fe₂O₃"])-(2.98*ox["CaO"])-(4.5*ox["MgO"])-(7.89*(ox["Na₂O"]+ox["K₂O"]))-(1.7*ox["SO₃"])-(0.63*ox["TiO₂"]);
+    slag="High";
+  }else if(sum<75){
+    aft=1323+(1.45*ox["SiO₂"])+(0.683*ox["Al₂O₃"])-(2.39*ox["Fe₂O₃"])-(3.1*ox["CaO"])-(4.5*ox["MgO"])-(7.49*(ox["Na₂O"]+ox["K₂O"]))-(2.1*ox["SO₃"])-(0.63*ox["TiO₂"]);
+    slag="Medium";
+  }else{
+    aft=1395+(1.2*ox["SiO₂"])+(0.9*ox["Al₂O₃"])-(2.5*ox["Fe₂O₃"])-(3.1*ox["CaO"])-(4.5*ox["MgO"])-(7.2*(ox["Na₂O"]+ox["K₂O"]))-(1.7*ox["SO₃"])-(0.63*ox["TiO₂"]);
+    slag="Low";
   }
+  return aft.toFixed(2)+" ("+slag+" Slagging)";
+}
+
 
   function calculateBlended(){
     const mills=document.querySelectorAll(".mill.red");
@@ -273,7 +274,8 @@
       gcvDiv.innerText=blended.toFixed(2);
 
       
-      const oxKeys=["SiO2","Al2O3","Fe2O3","CaO","MgO","Na2O","K2O","SO3","TiO2"];
+      const oxKeys = ["SiO₂","Al₂O₃","Fe₂O₃","CaO","MgO","Na₂O","K₂O","SO₃","TiO₂"];
+
       let ox = {};
   oxKeys.forEach(k => {
   ox[k] = ((getValue(coal1,k) * (perc1 / 100)) +
@@ -287,5 +289,6 @@
 </script>
 </body>
 </html>
+
 
 
