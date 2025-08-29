@@ -237,6 +237,10 @@
   }
 
   function calcAFT(ox){
+    const total = Object.values(ox).reduce((a,b)=>a+b,0);
+  if(total === 0){
+    return "0 (No Blend)";
+  }
     const sum=ox.SiO2+ox.Al2O3;
     let aft=0, slag="";
     if(sum<55){
@@ -249,7 +253,7 @@
       aft=1395+(1.2*ox.SiO2)+(0.9*ox.Al2O3)-(2.5*ox.Fe2O3)-(3.1*ox.CaO)-(4.5*ox.MgO)-(7.2*(ox.Na2O+ox.K2O))-(1.7*ox.SO3)-(0.63*ox.TiO2);
       slag="Low";
     }
-    return aft.toFixed(2)+" ("+slag+" Slaggingg)";
+    return aft.toFixed(2)+" ("+slag+" Slagging)";
   }
 
   function calculateBlended(){
@@ -265,25 +269,23 @@
       ];
 
       const gcv1=getValue(coal1,"GCV"), gcv2=getValue(coal2,"GCV"), gcv3=getValue(coal3,"GCV");
-      let blended=0; if(flowDiv>0){blended=((gcv1*perc1)+(gcv2*perc2)+(gcv3*perc3))/flowDiv;}
+      let blended=0;blended=((gcv1*(perc1)/100)+(gcv2*(perc2/100))+(gcv3*(perc3/100)));
       gcvDiv.innerText=blended.toFixed(2);
 
       
       const oxKeys=["SiO2","Al2O3","Fe2O3","CaO","MgO","Na2O","K2O","SO3","TiO2"];
       let ox = {};
-if (flowDiv > 0) {
   oxKeys.forEach(k => {
-    ox[k] = ((getValue(coal1,k)*perc1) + (getValue(coal2,k)*perc2) + (getValue(coal3,k)*perc3)) / flowDiv;
-  });
-  aftDiv.innerText = calcAFT(ox);
-} else {
-  aftDiv.innerText = "--"; 
-}
+  ox[k] = ((getValue(coal1,k) * (perc1 / 100)) +
+           (getValue(coal2,k) * (perc2 / 100)) +
+           (getValue(coal3,k) * (perc3 / 100)));
+});
 
-      aftDiv.innerText=calcAFT(ox);
+  aftDiv.innerText = calcAFT(ox);
     });
   }
 </script>
 </body>
 </html>
+
 
