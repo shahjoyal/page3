@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coal Blending Ratio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 10px 30px;
+    }
+    h1 {
+      color: yellow;
+      margin: 15px auto;
+      font-size: 2vw;
+      text-align: center;
+    }
+    .upload-btn, .calc-btn {
+      display: inline-block;
+      background: #020947;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 15px 5px;
+      border: none;
+    }
+    .mills-grid {
+      display: grid;
+      grid-template-columns: 100px 120px 70px 120px 70px 120px 70px 120px 120px 120px;
+      gap: 5px;
+      margin: 20px 0;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 1vw;
+      max-width: 95%;
+      overflow-x: auto;
+    }
+    .mill {
+      background: #111;
+      border: 1px solid #555;
+      text-align: center;
+      padding: 6px;
+      color: white;
+    }
+    .mill.red { background: #a00; }
+    .dropdown {
+      width: 100%;
+      padding: 5px;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #555;
+      font-size: 0.9vw;
+    }
+    .percentage-input, .coal-input {
+      width: 90%;
+      padding: 5px;
+      background: #000;
+      border: 1px solid #0f0;
+      color: #0f0;
+      text-align: center;
+      font-size: 0.8vw;
+    }
+    .coal-input { border: 2px solid yellow; font-weight: bold; }
+    .data-table {
+      margin: 20px 0;
+      border-collapse: collapse;
+      color: #0f0;
+      font-size: 1vw;
+      align-self: flex-start;
+    }
+    .data-table td {
+      border: 1px solid #666;
+      padding: 6px 10px;
+      text-align: center;
+    }
+    .data-table .label { font-weight: bold; text-align: left; padding-right: 15px; }
+    .data-box {
+      border: 2px solid yellow;
+      padding: 5px 10px;
+      min-width: 60px;
+      text-align: center;
+      font-weight: bold;
+      background: #000;
+    }
+    #loader { display: none; margin: 15px 0; color: yellow; font-size: 1.2em; text-align: left; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <div class="center">
+    <input type="file" id="excelFile" accept=".xlsx,.xls,.csv" style="display:none" />
+    <label for="excelFile" class="upload-btn">Upload Excel</label>
+    <button class="calc-btn" onclick="calculateBlended()">Calculate Blended GCV and AFT</button>
+  </div>
+
+  <h1>COAL BLENDING RATIO</h1>
+  <div id="loader">Loading... please wait</div>
+
+  
+  <div class="mills-grid" id="millsGrid">
+    <div></div>
+    <div class="mill">Option A</div><div class="mill">%</div>
+    <div class="mill">Option B</div><div class="mill">%</div>
+    <div class="mill">Option C</div><div class="mill">%</div>
+    <div class="mill">Coal Flow</div>
+    <div class="mill">Blended GCV</div>
+    <div class="mill">AFT</div>
+
+    
+    <div class="mill red">MILL-A</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+
+    
+    <div class="mill red">MILL-B</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+
+    <div class="mill red">MILL-C</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+
+    <div class="mill red">MILL-D</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+
+    <div class="mill red">MILL-E</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+
+    <div class="mill red">MILL-F</div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><select class="dropdown"></select></div>
+    <div class="mill"><input type="text" class="percentage-input" placeholder="%"></div>
+    <div class="mill"><input type="text" class="coal-input" placeholder="Coal Flow"></div>
+    <div class="mill blended-gcv">0</div>
+    <div class="mill aft">--</div>
+  </div>
+
+  
+  <table class="data-table">
+    <tr><td class="label">Coal Name</td><td><div class="data-box" id="coal1"></div></td><td><div class="data-box" id="coal2"></div></td><td><div class="data-box" id="coal3"></div></td><td><div class="data-box" id="coal4"></div></td></tr>
+    <tr><td class="label">SULPHUR</td><td><div class="data-box" id="sulphur1"></div></td><td><div class="data-box" id="sulphur2"></div></td><td><div class="data-box" id="sulphur3"></div></td><td><div class="data-box" id="sulphur4"></div></td></tr>
+    <tr><td class="label">GCV</td><td><div class="data-box" id="gcv1"></div></td><td><div class="data-box" id="gcv2"></div></td><td><div class="data-box" id="gcv3"></div></td><td><div class="data-box" id="gcv4"></div></td></tr>
+    <tr><td class="label">Cost</td><td><div class="data-box" id="cost1"></div></td><td><div class="data-box" id="cost2"></div></td><td><div class="data-box" id="cost3"></div></td><td><div class="data-box" id="cost4"></div></td></tr>
+  </table>
+
+<script>
+  let excelData = [];
+  document.getElementById("excelFile").addEventListener("change", handleFile, false);
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById("loader").style.display = "block"; 
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      setTimeout(() => {   
+        try {
+          const data = new Uint8Array(event.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          excelData = XLSX.utils.sheet_to_json(worksheet, { defval: 0 });
+
+          const coalValues = [...new Set(excelData.map(r => r["Coal"]).filter(v => v))];
+          document.querySelectorAll(".dropdown").forEach(drop=>{
+            drop.innerHTML=""; coalValues.forEach(c=>{
+              let opt=document.createElement("option");
+              opt.value=c; opt.textContent=c; drop.appendChild(opt);
+            });
+          });
+
+          excelData.slice(0,4).forEach((row,i)=>{
+            document.getElementById(`coal${i+1}`).innerText=row["Coal"]||"-";
+            document.getElementById(`sulphur${i+1}`).innerText=row["Sulphur"]||"0";
+            document.getElementById(`gcv${i+1}`).innerText=row["GCV"]||"0";
+            document.getElementById(`cost${i+1}`).innerText="0";
+          });
+
+        } catch(err){console.error(err); alert("Error reading file.");}
+        finally{document.getElementById("loader").style.display="none";}
+      },500);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function getValue(coalName, key){
+    const row=excelData.find(r=>r["Coal"]===coalName);
+    return row ? parseFloat(row[key])||0 : 0;
+  }
+
+  function calcAFT(ox){
+    const sum=ox.SiO2+ox.Al2O3;
+    let aft=0, slag="";
+    if(sum<55){
+      aft=1245+(1.1*ox.SiO2)+(0.95*ox.Al2O3)-(2.5*ox.Fe2O3)-(2.98*ox.CaO)-(4.5*ox.MgO)-(7.89*(ox.Na2O+ox.K2O))-(1.7*ox.SO3)-(0.63*ox.TiO2);
+      slag="High";
+    }else if(sum<75){
+      aft=1323+(1.45*ox.SiO2)+(0.683*ox.Al2O3)-(2.39*ox.Fe2O3)-(3.1*ox.CaO)-(4.5*ox.MgO)-(7.49*(ox.Na2O+ox.K2O))-(2.1*ox.SO3)-(0.63*ox.TiO2);
+      slag="Medium";
+    }else{
+      aft=1395+(1.2*ox.SiO2)+(0.9*ox.Al2O3)-(2.5*ox.Fe2O3)-(3.1*ox.CaO)-(4.5*ox.MgO)-(7.2*(ox.Na2O+ox.K2O))-(1.7*ox.SO3)-(0.63*ox.TiO2);
+      slag="Low";
+    }
+    return aft.toFixed(2)+" ("+slag+" Slagging)";
+  }
+
+  function calculateBlended(){
+    const mills=document.querySelectorAll(".mill.red");
+    mills.forEach(m=>{
+      let sibs=[], node=m;
+      for(let i=0;i<9;i++){node=node.nextElementSibling; sibs.push(node);}
+      const [coal1,perc1,coal2,perc2,coal3,perc3,flowDiv,gcvDiv,aftDiv]=[
+        sibs[0].querySelector("select")?.value||"", parseFloat(sibs[1].querySelector("input")?.value)||0,
+        sibs[2].querySelector("select")?.value||"", parseFloat(sibs[3].querySelector("input")?.value)||0,
+        sibs[4].querySelector("select")?.value||"", parseFloat(sibs[5].querySelector("input")?.value)||0,
+        parseFloat(sibs[6].querySelector("input")?.value)||0, sibs[7], sibs[8]
+      ];
+
+      const gcv1=getValue(coal1,"GCV"), gcv2=getValue(coal2,"GCV"), gcv3=getValue(coal3,"GCV");
+      let blended=0; if(flowDiv>0){blended=((gcv1*perc1)+(gcv2*perc2)+(gcv3*perc3))/flowDiv;}
+      gcvDiv.innerText=blended.toFixed(2);
+
+      
+      const oxKeys=["SiO2","Al2O3","Fe2O3","CaO","MgO","Na2O","K2O","SO3","TiO2"];
+      let ox = {};
+if (flowDiv > 0) {
+  oxKeys.forEach(k => {
+    ox[k] = ((getValue(coal1,k)*perc1) + (getValue(coal2,k)*perc2) + (getValue(coal3,k)*perc3)) / flowDiv;
+  });
+  aftDiv.innerText = calcAFT(ox);
+} else {
+  aftDiv.innerText = "--"; 
+}
+
+      aftDiv.innerText=calcAFT(ox);
+    });
+  }
+</script>
+</body>
+</html>
