@@ -73,13 +73,16 @@
       text-align: center;
       font-size: 0.8vw;
     }
+    /* Coal Flow input boxes */
     .coal-input { border: 2px solid yellow; font-weight: bold; }
+
+    /* Cost & Generation inputs styled same as Coal Flow */
+    .cost-input { border: 2px solid yellow; font-weight: bold; color: yellow; }
+
+    /* GCV row styled same as Blended GCV */
     .gcv-box {
       width: 90%;
       padding: 5px;
-      background: #000;
-      border: 1px solid yellow;
-      color: yellow;
       text-align: center;
       font-size: 0.8vw;
       font-weight: bold;
@@ -103,7 +106,7 @@
     .summary-header {
       background: #333;
       font-weight: bold;
-      color: yellow;
+      color: white;
     }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -342,7 +345,7 @@
   }
 
   function attachAutoUpdate() {
-    document.querySelectorAll(".percentage-input, .coal-input, #generation")
+    document.querySelectorAll(".percentage-input, .coal-input, #generation, .cost-input")
       .forEach(inp => inp.addEventListener("input", calculateBlended));
 
     ["coalDrop1","coalDrop2","coalDrop3"].forEach(id=>{
