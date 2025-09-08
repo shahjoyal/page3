@@ -37,7 +37,7 @@
 
     .upload-btn {
       display: inline-block;
-      background: var(--accent-btn);
+      background: #02008a;
       color: #fff;
       padding: 6px 12px;
       border-radius: 6px;
@@ -101,7 +101,7 @@
     .mill.gcv,
     .mill.aft-head,
     .mill.cost-head {
-      background: var(--color-blue-800);
+      background: #02008a;
       color: #fff;
       font-weight: 600;
     }
@@ -186,7 +186,7 @@
     }
 
     .summary-cell.summary-header {
-      background: var(--color-blue-800);
+      background: #02008a;
       font-weight: 700;
       color: #fff;
     }
@@ -222,16 +222,21 @@
       gap: 12px;
     }
 
-    .navbar button {
-      padding: 8px 14px;
-      background-color: #02008a;
-      color: #ffffff;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
+.navbar button {
+  padding: 8px 14px;
+  background-color: #02008a;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  width: 120px;          /* fixed width */
+  text-align: center;
+}
+
+
 
     .navbar button:hover {
       background-color: #001cbb;
@@ -340,8 +345,8 @@
       <div class="mill"><input type="text" class="flow-input" data-mill="3" placeholder="t"></div>
       <div class="mill"><input type="text" class="flow-input" data-mill="4" placeholder="t"></div>
       <div class="mill"><input type="text" class="flow-input" data-mill="5" placeholder="t"></div>
-      <div class="mill">--</div>
-      <div class="mill">--</div>
+      <div></div>
+      <div></div>
 
       <!-- Row 5: AFT (calculated per mill) -->
       <div class="mill aft-head">AFT</div>
@@ -351,8 +356,8 @@
       <div class="mill aft" data-mill="3">--</div>
       <div class="mill aft" data-mill="4">--</div>
       <div class="mill aft" data-mill="5">--</div>
-      <div class="mill">--</div>
-      <div class="mill">--</div>
+      <div></div>
+      <div></div>
     </div>
 
     <!-- Summary -->
