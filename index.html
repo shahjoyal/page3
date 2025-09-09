@@ -544,58 +544,42 @@
 
   // new: validate sums and update header colors
   function validateMillPercentages() {
-    for (let m = 0; m < 6; m++) {
-      let sum = 0;
-      for (let r = 1; r <= 3; r++) {
-        const val = parseFloat(document.querySelector(`.percentage-input[data-row="${r}"][data-mill="${m}"]`)?.value) || 0;
-        sum += val;
-      }
+  for (let m = 0; m < 6; m++) {
+    let hasPercent = false;
 
-      // header for the mill: the header elements are the 2nd..7th children in the header row
-      // to be safe, find by text match starting with "MILL-<LETTER>"
-      const letter = String.fromCharCode(65 + m); // A..F
-      const header = Array.from(document.querySelectorAll(".mills-grid > .mill")).find(el => /\bMILL-?/.test(el.textContent) && el.textContent.includes(letter));
-
-      if (!header) continue;
-
-      // clear color classes
-      header.classList.remove("red", "green");
-
-      if (sum === 100) {
-        header.classList.add("red"); // exact 100 -> red
-      } else if (sum < 100) {
-        header.classList.add("green"); // less than 100 -> green
-      } else {
-        // sum > 100: notify and revert last changed input
-        alert(`Mill ${letter} cannot exceed 100% (current total: ${sum}%). Please correct.`);
-
-        // revert the active input if it belongs to this mill
-        const active = document.activeElement;
-        if (active && active.classList.contains("percentage-input") && Number(active.dataset.mill) === m) {
-          // revert to previous value stored in data-prev (if available)
-          const prev = active.dataset.prev ?? "";
-          active.value = prev;
-        } else {
-          // if no active input or not matching, revert the last non-empty input in this mill (best-effort)
-          for (let r = 3; r >= 1; r--) {
-            const inp = document.querySelector(`.percentage-input[data-row="${r}"][data-mill="${m}"]`);
-            if (inp) {
-              const prev = inp.dataset.prev ?? "";
-              inp.value = prev;
-              break;
-            }
-          }
-        }
-
-        // after revert, recompute sum and update header class accordingly
-        let newSum = 0;
-        for (let r = 1; r <= 3; r++) {
-          newSum += parseFloat(document.querySelector(`.percentage-input[data-row="${r}"][data-mill="${m}"]`)?.value) || 0;
-        }
-        header.classList.add(newSum === 100 ? "red" : "green");
+    // check if any percent input > 0 for this mill
+    for (let r = 1; r <= 3; r++) {
+      const val = parseFloat(
+        document.querySelector(`.percentage-input[data-row="${r}"][data-mill="${m}"]`)?.value
+      ) || 0;
+      if (val > 0) {
+        hasPercent = true;
+        break;
       }
     }
+
+    // check the coal flow for this mill
+    const flow = parseFloat(
+      document.querySelector(`.flow-input[data-mill="${m}"]`)?.value
+    ) || 0;
+
+    // find the mill header (MILL-A ... MILL-F)
+    const letter = String.fromCharCode(65 + m); // A..F
+    const header = Array.from(document.querySelectorAll(".mills-grid > .mill"))
+      .find(el => el.textContent.includes(`MILL-${letter}`));
+
+    if (!header) continue;
+
+    // reset
+    header.classList.remove("red", "green");
+
+    if (hasPercent && flow > 0) {
+      header.classList.add("red");
+    } else {
+      header.classList.add("green");
+    }
   }
+}
 
   function attachAutoUpdate(){
     // add focus + input handlers for percentage inputs to track previous value and validate
