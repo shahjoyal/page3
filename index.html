@@ -376,6 +376,9 @@
 
       <div class="summary-cell summary-header">Heat Rate</div>
       <div class="summary-cell" id="heatRate">--</div>
+      
+      <div class="summary-cell summary-header">Cost/MT</div>
+      <div class="summary-cell" id="COSTRATE">--</div>
     </div>
   </div>
 
@@ -540,6 +543,39 @@
     } else {
       document.getElementById("heatRate").innerText = "--";
     }
+
+function getCoalQty(rowIndex) {
+  let total = 0;
+  for (let m = 0; m < 6; m++) {
+    const perc = parseFloat(document.querySelector(`.percentage-input[data-row="${rowIndex}"][data-mill="${m}"]`)?.value) || 0;
+    total += perc; 
+  }
+  return total;
+}
+
+
+const cost1 = parseFloat(document.getElementById("costBox1").value) || 0;
+const cost2 = parseFloat(document.getElementById("costBox2").value) || 0;
+const cost3 = parseFloat(document.getElementById("costBox3").value) || 0;
+
+const qty1 = getCoalQty(1);
+const qty2 = getCoalQty(2);
+const qty3 = getCoalQty(3);
+
+const totalCost = (qty1 * cost1) + (qty2 * cost2) + (qty3 * cost3);
+const totalQty  = qty1 + qty2 + qty3;
+const costRate  = totalQty > 0 ? (totalCost / totalQty) : 0;
+
+document.getElementById("COSTRATE").innerText = costRate.toFixed(2);
+
+
+if(generation > 0 && totalFlow > 0){
+  const heatRate = (totalFlow * avgGCV) / generation;
+  document.getElementById("heatRate").innerText = Number(heatRate).toFixed(2);
+} else {
+  document.getElementById("heatRate").innerText = "--";
+}
+
   }
 
   // new: validate sums and update header colors
