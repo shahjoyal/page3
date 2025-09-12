@@ -301,8 +301,8 @@
       <div class="mill green">MILL-E</div>
       <div class="mill green">MILL-F</div>
       <!-- END -->
-      <div class="mill gcv">GCV</div>
-      <div class="mill cost-head">Cost</div>
+      <div class="mill gcv">GCV(Kcal)</div>
+      <div class="mill cost-head">Cost/MT</div>
 
       <!-- Row 1: Coal selection 1 (first cell = dropdown, columns 2-7 = % under mills) -->
       <div class="mill"><select class="dropdown" id="coalDrop1"></select></div>
@@ -313,7 +313,7 @@
       <div class="mill"><input type="text" class="percentage-input" data-row="1" data-mill="4" placeholder="%"></div>
       <div class="mill"><input type="text" class="percentage-input" data-row="1" data-mill="5" placeholder="%"></div>
       <div class="mill"><div id="gcvBox1" class="gcv-box">--</div></div>
-      <div class="mill"><input type="text" id="costBox1" class="cost-input" placeholder="Cost"></div>
+      <div class="mill"><input type="text" id="costBox1" class="cost-input" placeholder="Cost/MT"></div>
 
       <!-- Row 2: Coal selection 2 -->
       <div class="mill"><select class="dropdown" id="coalDrop2"></select></div>
@@ -324,7 +324,7 @@
       <div class="mill"><input type="text" class="percentage-input" data-row="2" data-mill="4" placeholder="%"></div>
       <div class="mill"><input type="text" class="percentage-input" data-row="2" data-mill="5" placeholder="%"></div>
       <div class="mill"><div id="gcvBox2" class="gcv-box">--</div></div>
-      <div class="mill"><input type="text" id="costBox2" class="cost-input" placeholder="Cost"></div>
+      <div class="mill"><input type="text" id="costBox2" class="cost-input" placeholder="Cost/MT"></div>
 
       <!-- Row 3: Coal selection 3 -->
       <div class="mill"><select class="dropdown" id="coalDrop3"></select></div>
@@ -335,21 +335,21 @@
       <div class="mill"><input type="text" class="percentage-input" data-row="3" data-mill="4" placeholder="%"></div>
       <div class="mill"><input type="text" class="percentage-input" data-row="3" data-mill="5" placeholder="%"></div>
       <div class="mill"><div id="gcvBox3" class="gcv-box">--</div></div>
-      <div class="mill"><input type="text" id="costBox3" class="cost-input" placeholder="Cost"></div>
+      <div class="mill"><input type="text" id="costBox3" class="cost-input" placeholder="Cost/MT"></div>
 
       <!-- Row 4: Coal Flow -->
-      <div class="mill coal-flow">Coal Flow</div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="0" placeholder="t"></div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="1" placeholder="t"></div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="2" placeholder="t"></div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="3" placeholder="t"></div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="4" placeholder="t"></div>
-      <div class="mill"><input type="text" class="flow-input" data-mill="5" placeholder="t"></div>
+      <div class="mill coal-flow">Coal Flow(TPH)</div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="0" placeholder="TPH"></div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="1" placeholder="TPH"></div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="2" placeholder="TPH"></div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="3" placeholder="TPH"></div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="4" placeholder="TPH"></div>
+      <div class="mill"><input type="text" class="flow-input" data-mill="5" placeholder="TPH"></div>
       <div></div>
       <div></div>
 
       <!-- Row 5: AFT (calculated per mill) -->
-      <div class="mill aft-head">AFT</div>
+      <div class="mill aft-head">AFT(°C)</div>
       <div class="mill aft" data-mill="0">--</div>
       <div class="mill aft" data-mill="1">--</div>
       <div class="mill aft" data-mill="2">--</div>
@@ -365,16 +365,16 @@
       <div class="summary-cell summary-header">Generation (MW)</div>
       <div class="summary-cell"><input id="generation" class="generation-input" placeholder="MW" /></div>
 
-      <div class="summary-cell summary-header">Total Coal Flow</div>
+      <div class="summary-cell summary-header">Total Coal Flow(TPH)</div>
       <div class="summary-cell" id="totalFlow">0</div>
 
-      <div class="summary-cell summary-header">Average GCV</div>
+      <div class="summary-cell summary-header">Average GCV(Kcal)</div>
       <div class="summary-cell" id="avgGCV">0</div>
 
-      <div class="summary-cell summary-header">Average AFT</div>
+      <div class="summary-cell summary-header">Average AFT(°C)</div>
       <div class="summary-cell" id="avgAFT">--</div>
 
-      <div class="summary-cell summary-header">Heat Rate</div>
+      <div class="summary-cell summary-header">Heat Rate(Kcal per KWH)</div>
       <div class="summary-cell" id="heatRate">--</div>
       
       <div class="summary-cell summary-header">Cost/MT</div>
@@ -460,7 +460,11 @@
     }
     return Number(aft);
   }
-
+//gcv - Kcal
+//cost per MT
+//AFT degree celcius
+//coal flow TPH
+//heat rate Kcal per KWH
   // update GCV & Cost boxes (the 3 boxes in GCV & Cost columns)
   function updateGCVCostBoxes(){
     const c1 = document.getElementById("coalDrop1").value;
