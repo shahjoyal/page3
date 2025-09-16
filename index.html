@@ -59,7 +59,7 @@
 
     .mills-grid {
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
+      grid-template-columns: 140px repeat(8, 1fr);
       gap: 6px;
       margin: 8px 0;
       align-items: center;
@@ -191,57 +191,57 @@
       color: #fff;
     }
 
-    /* Navbar */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      background-color: var(--card);
-      padding: 10px 20px;
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 70px;
-      z-index: 1000;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+   .navbar {
+            
+            width: 100%;
+            background-color: #f7f8fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 65px;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
-    .navbar img {
-      height: 55px;
-    }
+        .navbar img {
+            height: 95px;
+            margin-right: 10px;
+            margin-left: 0px;
+        }
 
-    .navbar h1 {
-      margin: 0;
-      font-size: 22px;
-      color: var(--text);
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 10px; /* Use 'gap' for spacing between flex items */
+            margin-right: 20px;
+            
+        }
 
-    .nav-buttons {
-      display: flex;
-      gap: 12px;
-    }
+        .navbar h1 {
+            margin-left: 0px;
+            font-size: 20px; /* Adjust font size as needed */
+            color: black;
+            
+        }
 
-.navbar button {
-  padding: 8px 14px;
-  background-color: #02008a;
-  color: #ffffff;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  line-height: 1.2;
-  width: 120px;          /* fixed width */
-  text-align: center;
-}
-
-
-
-    .navbar button:hover {
-      background-color: #001cbb;
-    }
-
+       .navbar button {
+            padding: 10px 15px;
+            background-color: #02008a;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+        
+        .navbar button:hover {
+            background-color: #001cbb;
+        }
     /* compact adjustments to avoid scrolling */
     body {
       padding: 80px 6px 6px; /* reduce padding */
@@ -281,8 +281,9 @@
     <img src="abhitech-logo.png" alt="Company Logo">
     <h1>COAL BLENDING RATIO</h1>
     <div class="nav-buttons">
-      <button>Model</button>
-      <button>Calculation</button>
+      <button onclick="window.location.href='slagging_coal_page.html'">Calculation</button>
+      <button onclick="window.location.href='coal_table.html'">Coal Properties</button>
+      <button onclick="window.location.href='model.html'">Model</button>
       <button id="downloadPDF">Download PDF</button>
     </div>
   </div>
